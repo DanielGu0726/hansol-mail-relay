@@ -1,8 +1,9 @@
-{
-  "name": "hansol-mail-relay",
-  "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "nodemailer": "^6.9.15"
+  {
+    "name": "hansol-mail-relay",
+    "version": "1.0.0",
+    "private": true,
+    "dependencies": {
+      "nodemailer": "^6.9.15",
+      "imapflow": "^1.0.166"
+    }
   }
-}
