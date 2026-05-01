@@ -26,6 +26,12 @@ module.exports = async (req, res) => {
       user: process.env.DAUM_USER,    // 예: eungyu26@hanmail.net
       pass: process.env.DAUM_PASS,    // Daum 외부 SMTP 사용 비밀번호
     },
+    // Vercel 함수 한도(10s) 안에서 명확한 에러를 받도록 짧은 타임아웃
+    connectionTimeout: 7000,
+    greetingTimeout: 5000,
+    socketTimeout: 7000,
+    logger: false,
+    debug: false,
   });
 
   try {
@@ -41,6 +47,14 @@ module.exports = async (req, res) => {
     });
     return res.status(200).json({ ok: true, messageId: info.messageId });
   } catch (e) {
-    return res.status(500).json({ error: e.message });
+    // Vercel Logs에 자세한 정보 남김
+    console.error('[mail-relay] sendMail failed:', {
+      code: e.code, command: e.command, response: e.response, message: e.message,
+    });
+    return res.status(500).json({
+      error: e.message || 'unknown',
+      code: e.code || null,
+      response: e.response || null,
+    });
   }
 };
